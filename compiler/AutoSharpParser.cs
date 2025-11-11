@@ -88,6 +88,9 @@ internal class AutoSharpParser
         string id = Current.Value;
         Eat("IDENTIFIER");
 
+        // إضافة المتغير مؤقتًا قبل قراءة expression
+        symbolTable[id] = dtype;
+
         Node exprNode = null;
         if (Current.Type == "ASSIGN")
         {
@@ -98,7 +101,6 @@ internal class AutoSharpParser
         }
 
         Eat("SEMICOLON");
-        symbolTable[id] = dtype;
 
         var declNode = new Node("Decl", null,
             new Node($"DATATYPE ({dtype})"),
@@ -109,6 +111,7 @@ internal class AutoSharpParser
 
         return declNode;
     }
+
 
     private Node ParseAssignment()
     {
