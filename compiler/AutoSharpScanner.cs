@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace compiler
 {
@@ -11,19 +8,22 @@ namespace compiler
     {
         static List<(string Type, string Pattern)> tokenSpecs = new List<(string, string)>
         {
-            ("DATATYPE", @"\b(Gear|Speed|Model|Flag|Distance)\b"), // AutoSharp keywords
-            ("KEYWORD", @"\b(Check|Shift|Loop|Cruise|Stop|Dash|Sense|Ignite|Drive)\b"),
+            ("WHITESPACE", @"\s+"),
+            ("DATATYPE", @"\b(Gear|Speed|Model|Flag|Distance)\b"),
+            ("CHECK", @"\bCheck\b"),
+            ("SHIFT", @"\bShift\b"),
+            ("LOOP", @"\bLoop\b"),
+            ("BOOL", @"\b(true|false)\b"),
             ("NUMBER",  @"\b\d+(\.\d+)?\b"),
-            ("IDENTIFIER", @"\b[A-Za-z_][A-Za-z0-9_]*\b"),
             ("STRING", @"""[^""]*"""),
             ("ASSIGN", @"="),
-            ("OP", @"[+\-*/<>!]"),
+            ("SEMICOLON", @";"),
             ("LPAREN", @"\("),
             ("RPAREN", @"\)"),
             ("LBRACE", @"\{"),
             ("RBRACE", @"\}"),
-            ("SEMICOLON", @";"),
-            ("WHITESPACE", @"\s+"),
+            ("OP", @"[+\-*/<>!]"),
+            ("IDENTIFIER", @"\b[A-Za-z_][A-Za-z0-9_]*\b"),
             ("UNKNOWN", @".")
         };
 
@@ -36,7 +36,7 @@ namespace compiler
 
             foreach (Match m in Regex.Matches(input, combinedPattern))
             {
-                string type = "";
+                string type = null;
                 foreach (var t in tokenSpecs)
                 {
                     if (m.Groups[t.Type].Success)
@@ -50,13 +50,8 @@ namespace compiler
                 tokens.Add((type, m.Value));
             }
 
+            tokens.Add(("EOF", ""));
             return tokens;
         }
-
-
-
-
-
-
     }
 }

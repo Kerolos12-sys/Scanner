@@ -31,9 +31,10 @@ namespace AutoSharpCompiler
 
             try
             {
+                
                 var parser = new AutoSharpParser(tokens);
-                var root = parser.ParseStatement();
-                AutoSharpParser.PrintTree(root);
+                var tree = parser.ParseProgram();   // مهم جداً
+                AutoSharpParser.PrintTree(tree);
             }
             catch (Exception ex)
             {
