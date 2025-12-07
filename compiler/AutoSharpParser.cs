@@ -207,7 +207,7 @@ internal class AutoSharpParser
         return block;
     }
 
-    private Node ParseExpression()
+    private Node ParseExpression()//a+b
     {
         var node = ParseTerm();
         while (Current.Type == "OP" && (Current.Value == "+" || Current.Value == "-" || Current.Value == ">" || Current.Value == "<"))
